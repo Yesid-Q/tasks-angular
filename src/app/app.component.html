@@ -1,1 +1,40 @@
-hi
+<main *ngIf="(taskService.tasks$ | async)?.length; else emptyTasks">
+    <header class="p-2 grid grid-cols-3 justify-end border shadow-sm gap-x-1">
+        <select
+            class="w-full h-10 bg-transparent text-sm border rounded px-3 py-2 transition duration-300 ease focus:outline-none shadow-sm focus:shadow-md col-span-2">
+            <option value="">
+                Todos
+            </option>
+            <option>
+                Completados
+            </option>
+            <option>
+                Pendientes
+            </option>
+        </select>
+        <app-button color="primary" (click)="list = !list">
+            {{ list ? 'Agregar tarea' : 'L. tareas' }}
+        </app-button>
+    </header>
+    <section>
+        <ul *ngIf="list">
+            <li class="p-2 pt-0" *ngFor="let task of taskService.tasks$ | async; trackById">
+                <app-card-task [task]="task"></app-card-task>
+            </li>
+        </ul>
+
+        <app-form *ngIf="!list" (completed)="onChangeList()"></app-form>
+    </section>
+</main>
+
+<ng-template #emptyTasks>
+    <main class="grid justify-center items-center h-screen">
+        <app-form *ngIf="first"></app-form>
+        <article *ngIf="!first" class="relative bg-white py-6 px-6 rounded-3xl max-w-[600px] my-4 shadow-xl">
+            No existen tareas creadas.
+            <app-button color="primary" (click)="first = !first">
+                Agregar tarea
+            </app-button>
+        </article>
+    </main>
+</ng-template>

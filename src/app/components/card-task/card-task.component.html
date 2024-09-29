@@ -1,0 +1,63 @@
+<article class="bg-white relative max-w-[600px] mb-2 rounded-3xl shadow-xl">
+    <main class="py-6 px-6" [ngClass]="{'completed': task.completed}">
+        <section>
+            <div class="flex justify-between">
+                <p class="text-xl font-semibold my-2 capitalize">{{ task.name }}</p>
+
+                <button (click)="changeState()" class="flex items-center m-2 cursor-pointer cm-toggle-wrapper mb-6">
+                    <span class="font-semibold text-xs mr-1">
+                        Com.
+                    </span>
+                    <div class="rounded-full w-8 h-4 p-0.5"
+                        [ngClass]="{'bg-green-500' : task.completed, 'bg-gray-300': !task.completed}">
+                        <div class="rounded-full w-3 h-3 bg-white transform mx-auto duration-300 ease-in-out"
+                            [ngClass]="{'translate-x-2': task.completed, '-translate-x-2': !task.completed}">
+                        </div>
+                    </div>
+                    <span class="font-semibold text-xs ml-1">
+                        Pen.
+                    </span>
+                </button>
+            </div>
+            <div class="flex space-x-2 text-gray-400 text-sm my-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p>{{ task.deadline }}</p>
+            </div>
+            <div class="border-t-2"></div>
+            <div class="grid">
+                <div class="my-2">
+                    <p class="text-base mb-2">Usuarios:</p>
+                    <div class="grid">
+                        <ul>
+                            <li *ngFor="let user of task.users" class="w-full flex justify-between">
+                                <article class="w-full flex items-center justify-between last:pb-0">
+                                    <div class="flex items-center gap-x-3">
+                                        <div>
+                                            <h6
+                                                class="block font-sans text-base capitalize font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">
+                                                {{ user.name }}
+                                            </h6>
+                                            <div class="flex items-center gap-x-3">
+                                                <app-badge *ngFor="let skill of user.skills">
+                                                    {{ skill }}
+                                                </app-badge>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6
+                                        class="block font-sans text-xl font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">
+                                        {{ user.age }}
+                                    </h6>
+                                </article>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</article>

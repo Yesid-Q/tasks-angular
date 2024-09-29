@@ -1,0 +1,20 @@
+<div class="w-full max-w-sm">
+    <label class="block mb-1 text-sm" [ngClass]="{
+            'text-green-700': valid === true && touched,
+            'text-red-700': valid === false && touched
+        }">
+        <ng-content></ng-content>
+    </label>
+    <input [value]="value" [type]="type" (input)="handleInput($event.target)" (blur)="onTouched()"
+        class="w-full h-10 bg-transparent text-sm border rounded px-3 py-2 transition duration-300 ease focus:outline-none shadow-sm focus:shadow-md"
+        [ngClass]="{
+            'text-green-700 border-green-400 focus:border-green-500 hover:border-green-500': valid === true && touched,
+            'text-red-700 border-red-400 focus:border-red-500 hover:border-red-500': valid === false && touched
+        }">
+    <p *ngIf="valid !== undefined" class="flex items-center mt-2 text-xs" [ngClass]="{
+            'text-green-700': valid === true && touched,
+            'text-red-700': valid === false && touched
+        }">
+        <ng-content select="[helper]"></ng-content>
+    </p>
+</div>
