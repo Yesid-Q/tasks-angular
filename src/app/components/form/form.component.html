@@ -1,0 +1,110 @@
+<form [formGroup]="formTask" class="flex justify-center items-center min-h-screen px-2" (submit)="onSubmit()">
+    <section class="max-w-[720px] mx-auto">
+        <div class="w-full max-w-sm min-w-[200px]">
+            <h2
+                class="block font-sans text-lg capitalize font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">
+                Crear tarea
+            </h2>
+        </div>
+
+        <div class="w-full max-w-sm min-w-[200px]">
+            <app-input formControlName="name" [valid]="formTask.get('name')?.valid"
+                [touched]="formTask.get('name')?.touched">
+                Nombre de la tarea:
+                <ng-container helper *ngIf="formTask.get('name')?.invalid && formTask.get('name')?.touched">
+                    <ng-container *ngIf="formTask.get('name')?.hasError('required')">
+                        El nombre es obligatorio.
+                    </ng-container>
+                    <ng-container *ngIf="formTask.get('name')?.hasError('minlength')">
+                        El nombre debe tener al menos 3 caracteres.
+                    </ng-container>
+                </ng-container>
+            </app-input>
+        </div>
+        <div class="w-full max-w-sm min-w-[200px]">
+            <app-input type="date" formControlName="deadline" [valid]="formTask.get('deadline')?.valid"
+                [touched]="formTask.get('deadline')?.touched">
+                Fecha límite:
+                <ng-container helper *ngIf="formTask.get('deadline')?.invalid && formTask.get('deadline')?.touched">
+                    <ng-container *ngIf="formTask.get('deadline')?.hasError('required')">
+                        La fecha limite es obligatorio.
+                    </ng-container>
+                </ng-container>
+            </app-input>
+        </div>
+
+        <div class="w-full max-w-sm min-w-[200px]" formArrayName="users">
+            <h6
+                class="block font-sans text-base capitalize font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">
+                Usuarios
+            </h6>
+            <ng-container *ngIf="formTask.get('users')?.errors?.['duplicate']">
+                <p class="flex items-center mt-2 text-xs text-red-700">
+                    No puede existir el mismo usuario
+                </p>
+            </ng-container>
+            <section class="max-w-[720px] mx-auto grid grid-cols-3 gap-2 mb-2"
+                *ngFor="let user of users.controls; let i = index" [formGroupName]="i">
+                <div class="w-full max-w-sm min-w-[200px] col-span-2">
+                    <app-input formControlName="name" [valid]="users.get(i.toString())?.get('name')?.valid"
+                        [touched]="users.get(i.toString())?.get('name')?.touched">
+                        Nombre completo:
+                        <ng-container helper
+                            *ngIf="users.get(i.toString())?.get('name')?.invalid && users.get(i.toString())?.get('name')?.touched">
+                            <ng-container *ngIf="users.get(i.toString())?.get('name')?.hasError('required')">
+                                El nombre es obligatorio.
+                            </ng-container>
+                            <ng-container *ngIf="users.get(i.toString())?.get('name')?.hasError('minlength')">
+                                El nombre debe tener al menos 5 caracteres.
+                            </ng-container>
+                        </ng-container>
+                    </app-input>
+                </div>
+                <div class="w-full max-w-sm col-span-1">
+                    <app-input type="number" formControlName="age" [valid]="users.get(i.toString())?.get('age')?.valid"
+                        [touched]="users.get(i.toString())?.get('age')?.touched">
+                        Edad:
+                        <ng-container helper
+                            *ngIf="users.get(i.toString())?.get('age')?.invalid && users.get(i.toString())?.get('age')?.touched">
+                            <ng-container *ngIf="users.get(i.toString())?.get('age')?.hasError('required')">
+                                La edad es obligatorio.
+                            </ng-container>
+                            <ng-container *ngIf="users.get(i.toString())?.get('age')?.hasError('min')">
+                                La edad minima es 18 años.
+                            </ng-container>
+                        </ng-container>
+                    </app-input>
+                </div>
+                <div class="w-full max-w-sm min-w-[200px] col-span-3" formArrayName="skills">
+                    <div class="grid">
+                        <div class="flex justify-between" *ngFor="let skill of getSkills(i).controls; let j = index">
+                            <app-input type="text" [formControlName]="j">
+                                Habilidades:
+                            </app-input>
+                            <button type="button" (click)="addSkill(i)"
+                                class="border-green-600 bg-green-600 hover:bg-green-800 text-green-50 focus-visible:outline-green-800 w-10 h-10 mt-6 flex items-center justify-center gap-x-2 rounded-full">
+                                +
+                            </button>
+                            <button type="button" (click)="removeSkill(i, j)"
+                                class="border-red-600 bg-red-600 hover:bg-red-800 text-red-50 focus-visible:outline-red-800 w-10 h-10 mt-6 flex items-center justify-center gap-x-2 rounded-full">
+                                -
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <app-button type="button" color="primary" (click)="addNewUser()">
+                Agregar usuario
+            </app-button>
+        </div>
+
+        <div class="w-full max-w-sm min-w-[200px] grid grid-cols-2 gap-1 py-2">
+            <app-button type="submit" color="primary">
+                Guardar tarea
+            </app-button>
+            <app-button type="reset" color="secondary">
+                Limpiar
+            </app-button>
+        </div>
+    </section>
+</form>
