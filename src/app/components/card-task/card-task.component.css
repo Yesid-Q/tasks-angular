@@ -1,0 +1,19 @@
+.completed {
+    clip-path: inset(0);
+}
+
+.completed::before {
+    content: 'Completado';
+    height: 40px;
+    width: 200px;
+    position: absolute;
+    text-align: center;
+    rotate: -45deg;
+    top: 10px;
+    left: -70px;
+    background-color: #a855f7;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
