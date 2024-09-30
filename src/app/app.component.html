@@ -1,15 +1,15 @@
 <main *ngIf="(taskService.tasks$ | async)?.length; else emptyTasks">
     <header
         class="p-2 rounded-md sm:p-4 grid grid-cols-3 justify-end border shadow-sm gap-x-1 w-svw max-w-[600px] mx-auto">
-        <select
+        <select [(ngModel)]="filter"
             class="w-full h-10 bg-transparent text-sm border rounded px-3 py-2 transition duration-300 ease focus:outline-none shadow-sm focus:shadow-md col-span-2">
-            <option value="">
+            <option value="ALL">
                 Todos
             </option>
-            <option>
+            <option value="COMPLETED">
                 Completados
             </option>
-            <option>
+            <option value="PENDING">
                 Pendientes
             </option>
         </select>
@@ -19,7 +19,8 @@
     </header>
     <section class="w-svw max-w-[600px] mx-auto">
         <ul *ngIf="list">
-            <li class="p-2 pt-0" *ngFor="let task of taskService.tasks$ | async; trackById">
+            <li class="p-2 pt-0"
+                *ngFor="let task of (taskService.tasks$ | async | filter:'completed':filter); trackById">
                 <app-card-task [task]="task"></app-card-task>
             </li>
         </ul>
